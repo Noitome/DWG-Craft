@@ -13,6 +13,16 @@ require 'find'
 module DWG_Craft
 
   VERSION = "1.0"
+
+  # SketchUp 2026 compatible data path — use cluster_dir, fallback to support_path
+  def self.data_path
+    @_data_path ||= begin
+      base = Sketchup.cluster_dir rescue Sketchup.support_path rescue ENV['APPDATA']
+      d = File.join(base.to_s, "DWG-Craft")
+      Dir.mkdir(d) unless File.exist?(d)
+      d
+    end
+  end
   PLUGIN_NAME = "DWG-Craft"
   AUTHOR = "Horizon"
 
